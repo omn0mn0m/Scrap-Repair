@@ -1,0 +1,30 @@
+[gd_scene load_steps=5 format=2]
+
+[ext_resource path="res://assets/0x72_16x16RobotTileset.v1.png" type="Texture" id=1]
+[ext_resource path="res://objects/inanimate/CompanionCube.gd" type="Script" id=2]
+
+[sub_resource type="RectangleShape2D" id=1]
+extents = Vector2( 8.00435, 8.00737 )
+
+[sub_resource type="RectangleShape2D" id=2]
+extents = Vector2( 10.2788, 10.1919 )
+
+[node name="CompanionCube" type="KinematicBody2D"]
+script = ExtResource( 2 )
+
+[node name="Sprite" type="Sprite" parent="."]
+texture = ExtResource( 1 )
+region_enabled = true
+region_rect = Rect2( 144, 208, 16, 16 )
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource( 1 )
+
+[node name="InteractArea2D" type="Area2D" parent="."]
+collision_layer = 2
+collision_mask = 2
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="InteractArea2D"]
+shape = SubResource( 2 )
+[connection signal="body_entered" from="InteractArea2D" to="." method="_on_InteractArea2D_body_entered"]
+[connection signal="body_exited" from="InteractArea2D" to="." method="_on_InteractArea2D_body_exited"]
