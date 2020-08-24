@@ -10,6 +10,9 @@ enum CUBE_TYPE {
 	BLUE = 2,
 }
 
+var valid_tip_message = "Friendship Prism\nZ: Pick Up"
+var invalid_tip_message = "Error: Permission Denied"
+
 var cube_type = CUBE_TYPE.GREY
 
 var held = false
@@ -49,8 +52,10 @@ func is_held():
 func _on_InteractArea2D_body_entered(body):
 	if body.has_method("interact_with"):
 		body.set_interactable_object(self)
+		$ControlTip.visible = true
 
 func _on_InteractArea2D_body_exited(body):
 	if not held:
 		if body.has_method("interact_with"):
 			body.set_interactable_object(null)
+			$ControlTip.visible = false

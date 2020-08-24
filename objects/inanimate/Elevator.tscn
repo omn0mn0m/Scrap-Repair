@@ -1,0 +1,27 @@
+[gd_scene load_steps=4 format=2]
+
+[ext_resource path="res://assets/0x72_16x16RobotTileset.v1.png" type="Texture" id=1]
+[ext_resource path="res://objects/inanimate/Elevator.gd" type="Script" id=2]
+
+[sub_resource type="RectangleShape2D" id=1]
+extents = Vector2( 23.0398, 1.5124 )
+
+[node name="Elevator" type="Node2D"]
+script = ExtResource( 2 )
+
+[node name="Platform" type="KinematicBody2D" parent="."]
+
+[node name="Sprite" type="Sprite" parent="Platform"]
+texture = ExtResource( 1 )
+region_enabled = true
+region_rect = Rect2( 112, 112, 48, 32 )
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Platform"]
+position = Vector2( 0, 1.50078 )
+shape = SubResource( 1 )
+one_way_collision = true
+
+[node name="MovementTween" type="Tween" parent="."]
+repeat = true
+playback_process_mode = 0
+playback/repeat = true

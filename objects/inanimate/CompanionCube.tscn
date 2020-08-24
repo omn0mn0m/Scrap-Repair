@@ -26,5 +26,18 @@ collision_mask = 2
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="InteractArea2D"]
 shape = SubResource( 2 )
+
+[node name="ControlTip" type="Label" parent="."]
+visible = false
+margin_left = -178.44
+margin_top = -45.0451
+margin_right = 178.56
+margin_bottom = -14.0451
+text = "Friendship Prism
+Z: Pick Up"
+align = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
 [connection signal="body_entered" from="InteractArea2D" to="." method="_on_InteractArea2D_body_entered"]
 [connection signal="body_exited" from="InteractArea2D" to="." method="_on_InteractArea2D_body_exited"]

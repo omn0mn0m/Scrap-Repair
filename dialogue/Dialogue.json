@@ -1,8 +1,26 @@
- {
+{
     "0": {
         "en": "Where am I?"
     },
+    "Alone": {
+	"en": "Am I alone here?"
+    },
     "Interact": {
         "en": "Press 'Z' to interact with objects."
+    },
+    "RepairHim": {
+	"en": "Looks like he needs some parts... Maybe I can find them." 
+    },
+    "PartsFound": {
+	"en": "Now just to find a battery..."
+    },
+    "Futility": {
+	"en": "I can't find one. I should give them mine... to give them a chance to live."
+    },
+    "Swap": {
+	"en": "Press 'X' to transfer batteries."
+    },
+    "ExitSolo": {
+	"en": "Goodbye... Thank you."
     }
- }
+}
