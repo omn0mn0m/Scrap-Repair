@@ -31,14 +31,19 @@ func _ready():
 		$Sprite.region_rect = pink_cube_sprite
 	else:
 		$Sprite.region_rect = grey_cube_sprite
+		
+	$Sprite.visible = false
 
 func _physics_process(delta):
-	if held:
-		position = get_parent().get_node("Player/HoldPosition2D").global_position
-	else:
-		_velocity.y += gravity * delta
+	if GameVariables.terminals_activated >= 4:
+		$Sprite.visible = true
 		
-		_velocity = move_and_slide(_velocity, FLOOR_NORMAL)
+		if held:
+			position = get_parent().get_node("Player/HoldPosition2D").global_position
+		else:
+			_velocity.y += gravity * delta
+			
+			_velocity = move_and_slide(_velocity, FLOOR_NORMAL)
 
 func interact(player):
 	held = !held

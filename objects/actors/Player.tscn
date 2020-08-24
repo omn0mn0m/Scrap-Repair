@@ -156,10 +156,10 @@ stream = ExtResource( 4 )
 [node name="PauseMenu" parent="." instance=ExtResource( 5 )]
 
 [node name="GameMessage" type="Label" parent="."]
-margin_left = -253.465
-margin_top = 108.847
-margin_right = 242.535
-margin_bottom = 122.847
+margin_left = -247.108
+margin_top = 88.1875
+margin_right = 248.892
+margin_bottom = 102.187
 align = 1
 __meta__ = {
 "_edit_use_anchors_": false

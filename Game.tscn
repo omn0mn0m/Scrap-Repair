@@ -15,7 +15,7 @@
 position = Vector2( 992, 512 )
 
 [node name="Player" parent="World" instance=ExtResource( 2 )]
-position = Vector2( 32, 200 )
+position = Vector2( 33.3979, 198.824 )
 
 [node name="DialogueTriggers" type="Node" parent="World"]
 
@@ -41,6 +41,12 @@ duration = 5
 position = Vector2( 2224, 488 )
 part = "ExitSolo"
 duration = 10
+
+[node name="DialogueTrigger6" parent="World/DialogueTriggers" instance=ExtResource( 3 )]
+position = Vector2( 2447.23, 490.832 )
+part = "Bebop"
+is_game_message = true
+duration = 5
 
 [node name="NormalAudioStreamPlayer" type="AudioStreamPlayer" parent="."]
 stream = ExtResource( 5 )

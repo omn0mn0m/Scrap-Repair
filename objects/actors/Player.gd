@@ -18,6 +18,8 @@ var has_battery = false
 var lang = "en"
 var dialogue_file_path = "res://dialogue/Dialogue.json"
 var dialogue
+var last_dialogue_part = ""
+var last_game_message_part = ""
 
 var respawn_point
 
@@ -29,7 +31,6 @@ func _ready():
 	dialogue_file.open(dialogue_file_path, dialogue_file.READ)
 	var json = dialogue_file.get_as_text()
 	dialogue = JSON.parse(json).result
-	print(dialogue)
 	dialogue_file.close()
 	
 	respawn_point = global_position
@@ -129,19 +130,27 @@ func show_dialogue_part(part, is_game_message, duration):
 	if is_game_message:
 		game_message_display.text = dialogue[part][lang]
 		$GameMessageTimer.wait_time = duration
+		last_game_message_part = part
 		$GameMessageTimer.start()
 	else:
 		dialogue_display.text = dialogue[part][lang]
 		$ChatBubble.visible = true
 		$DialogueTimer.wait_time = duration
+		last_dialogue_part = part
 		$DialogueTimer.start()
 
 func _on_DialogueTimer_timeout():
 	$ChatBubble.visible = false
 	dialogue_display.text = ""
+	
+	if last_dialogue_part == "Reunion":
+		get_tree().change_scene("res://menus/EndCredits.tscn")
 
 func _on_GameMessageTimer_timeout():
 	game_message_display.text = ""
+	
+	if last_game_message_part == "Bebop":
+		get_tree().change_scene("res://menus/EndCredits.tscn")
 
 func _on_FutilityTimer_timeout():
 	show_dialogue_part("Futility", false, 7)

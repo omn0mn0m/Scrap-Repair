@@ -44,7 +44,7 @@ _global_script_class_icons={
 
 [application]
 
-config/name="Extra- Credits- Jam- 2020"
+config/name="Scrap Repair"
 run/main_scene="res://menus/MainMenu.tscn"
 config/icon="res://icon.png"
 

@@ -54,6 +54,7 @@ func interact(player):
 			if player.has_battery:
 				$Sprite.region_rect = robot2_on_sprite
 				$ChatBubble.visible = true
+				player.show_dialogue_part("Reunion", false, 3)
 
 func swap(player):
 	if robot2_missing_parts == 0 and robot1_missing_parts == 0:
@@ -64,8 +65,10 @@ func swap(player):
 		character = temp_char
 		
 		if character == "robot1":
+			player.show_dialogue_part("SecondChance", false, 3)
 			$Sprite.region_rect = robot1_off_sprite
 		else:
+			player.show_dialogue_part("Why", false, 3)
 			$Sprite.region_rect = robot2_off_sprite
 
 func _on_Area2D_body_entered(body):
