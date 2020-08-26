@@ -1,7 +1,7 @@
 extends Area2D
 
 func interact(player):
-	player.has_battery = true
+	GameVariables.has_battery = true
 	$SoundEffect2D.play()
 	
 func _on_Battery_body_entered(body):

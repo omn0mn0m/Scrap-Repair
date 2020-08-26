@@ -1,7 +1,9 @@
-[gd_scene load_steps=6 format=2]
+[gd_scene load_steps=8 format=2]
 
 [ext_resource path="res://objects/actors/Robot.gd" type="Script" id=1]
 [ext_resource path="res://assets/0x72_16x16RobotTileset.v1.png" type="Texture" id=2]
+[ext_resource path="res://assets/Powerup14.wav" type="AudioStream" id=3]
+[ext_resource path="res://assets/sfx_sounds_interaction10.wav" type="AudioStream" id=4]
 
 [sub_resource type="CapsuleShape2D" id=1]
 radius = 7.97076
@@ -11,7 +13,7 @@ height = 8.90925
 radius = 11.6415
 height = 8.41209
 
-[sub_resource type="StyleBoxFlat" id=6]
+[sub_resource type="StyleBoxFlat" id=3]
 bg_color = Color( 0.227451, 0.227451, 0.227451, 0.333333 )
 
 [node name="Robot" type="KinematicBody2D"]
@@ -50,20 +52,28 @@ margin_left = -244.053
 margin_top = -69.926
 margin_right = -10.0532
 margin_bottom = -11.926
-custom_styles/panel = SubResource( 6 )
+custom_styles/panel = SubResource( 3 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
 [node name="Dialogue" type="Label" parent="ChatBubble"]
 margin_left = 3.0
-margin_top = 3.0
+margin_top = 2.53671
 margin_right = 231.0
-margin_bottom = 54.0
-text = "Hi there... Thanks for taking care of me."
+margin_bottom = 53.5367
+text = "You came back. Let's leave together this time.
+"
 autowrap = true
 __meta__ = {
 "_edit_use_anchors_": false
 }
+
+[node name="SwapSoundEffect2D" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource( 3 )
+
+[node name="RepairSoundEffect2D" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource( 4 )
 [connection signal="body_entered" from="Area2D" to="." method="_on_Area2D_body_entered"]
 [connection signal="body_exited" from="Area2D" to="." method="_on_Area2D_body_exited"]
+[connection signal="finished" from="SwapSoundEffect2D" to="." method="_on_SwapSoundEffect2D_finished"]

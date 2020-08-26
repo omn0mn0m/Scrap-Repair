@@ -32,6 +32,8 @@ func interact(player):
 			$Sprite.region_rect = robot2_off_sprite
 		elif $Sprite.region_rect == robot2_off_sprite:
 			$Sprite.region_rect = robot2_on_sprite
+			
+	$SoundEffect2D.play()
 
 func _on_Button_body_entered(body):
 	if body.has_method("interact_with"):

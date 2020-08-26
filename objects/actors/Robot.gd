@@ -17,9 +17,11 @@ var robot1_missing_parts = 0
 var robot2_missing_parts = 4
 
 var started_futility_countdown = false
+var first_swap = false
 
 var attach_part_tip_message = "Z: Attach Part"
-var attach_battery_tip_message = "X: Swap Batteries"
+var give_battery_tip_message = "Z: Attach Spare Battery"
+var swap_battery_tip_message = "Z: Give Your Battery"
 
 var character = "robot2"
 
@@ -27,65 +29,86 @@ func _physics_process(delta):
 	_velocity = move_and_slide(_velocity, FLOOR_NORMAL)
 
 func interact(player):
-	if character == "robot1":
-		pass # Here in case robot 1 needs to break in the future
-	else:
-		robot2_missing_parts -= player.parts_held
-		player.parts_held = 0
+	if GameVariables.can_swap:
+		$SwapSoundEffect2D.play()
 		
-		if not GameVariables.can_swap:
-			$ControlTip.text = attach_part_tip_message + " \nParts Missing: " + str(robot2_missing_parts)
-		
-		if robot2_missing_parts == 3:
-			$Sprite.region_rect = robot2_off_noleg_nobackpack_sprite
-		elif robot2_missing_parts == 2:
-			$Sprite.region_rect = robot2_off_noleg_sprite
-		elif robot2_missing_parts == 1:
-			$Sprite.region_rect = robot2_off_1leg_sprite
-		elif robot2_missing_parts == 0:
-			$Sprite.region_rect = robot2_off_sprite
-			
-			player.show_dialogue_part("PartsFound", false, 3)
-			
-			if not started_futility_countdown:
-				player.futility_timer.start()
-				started_futility_countdown = true
-				
-			if player.has_battery:
-				$Sprite.region_rect = robot2_on_sprite
-				$ChatBubble.visible = true
-				player.show_dialogue_part("Reunion", false, 3)
-
-func swap(player):
-	if robot2_missing_parts == 0 and robot1_missing_parts == 0:
-		var temp_char = player.character
-		var temp_pos = player.position
-		
-		player.character = character
-		character = temp_char
-		
-		if character == "robot1":
-			player.show_dialogue_part("SecondChance", false, 3)
-			$Sprite.region_rect = robot1_off_sprite
+		if GameVariables.has_battery:
+			$Sprite.region_rect = robot2_on_sprite
+			$ChatBubble.visible = true
+			player.show_dialogue_part("Reunion", false, 7)
 		else:
-			player.show_dialogue_part("Why", false, 3)
-			$Sprite.region_rect = robot2_off_sprite
+			var temp_char = player.character
+			
+			player.character = character
+			character = temp_char
+			
+			if character == "robot1":
+				if first_swap:
+					player.show_dialogue_part("SecondChance2", false, 3)
+				else:
+					player.show_dialogue_part("SecondChance", false, 3)
+					first_swap = true
+					
+				$Sprite.region_rect = robot1_off_sprite
+			else:
+				player.show_dialogue_part("Why", false, 3)
+				$Sprite.region_rect = robot2_off_sprite
+	else:
+		if character == "robot1":
+			pass
+		else:
+			if player.parts_held != 0:
+				$RepairSoundEffect2D.play()
+				
+				robot2_missing_parts -= player.parts_held
+				player.parts_held = 0
+			
+				$ControlTip.text = attach_part_tip_message + " \nParts Missing: " + str(robot2_missing_parts)
+			
+			if robot2_missing_parts == 3:
+				$Sprite.region_rect = robot2_off_noleg_nobackpack_sprite
+			elif robot2_missing_parts == 2:
+				$Sprite.region_rect = robot2_off_noleg_sprite
+			elif robot2_missing_parts == 1:
+				$Sprite.region_rect = robot2_off_1leg_sprite
+			elif robot2_missing_parts == 0:
+				$Sprite.region_rect = robot2_off_sprite
+				
+				player.show_dialogue_part("PartsFound", false, 3)
+				
+				if not started_futility_countdown:
+					player.futility_timer.start()
+					started_futility_countdown = true
 
 func _on_Area2D_body_entered(body):
 	if body.has_method("interact_with"):
 		body.set_interactable_object(self)
 		
 		if character == "robot1":
-			pass # In case robot 1 needs to break in the future
+			if GameVariables.can_swap:
+				if body.has_battery:
+					$ControlTip.text = give_battery_tip_message
+				else:
+					$ControlTip.text = swap_battery_tip_message
 		else:
 			if GameVariables.can_swap:
-				$ControlTip.text = attach_battery_tip_message
+				if body.has_battery:
+					$ControlTip.text = give_battery_tip_message
+				else:
+					$ControlTip.text = swap_battery_tip_message
 			else:
-				$ControlTip.text = attach_part_tip_message + " \nParts Missing: " + str(robot2_missing_parts)
+				if robot2_missing_parts == 0:
+					$ControlTip.text = give_battery_tip_message
+				else:
+					$ControlTip.text = attach_part_tip_message + " \nParts Missing: " + str(robot2_missing_parts)
 			
-			$ControlTip.visible = true
+		$ControlTip.visible = true
 
 func _on_Area2D_body_exited(body):
 	if body.has_method("interact_with"):
 		body.set_interactable_object(null)
 		$ControlTip.visible = false
+
+
+func _on_SwapSoundEffect2D_finished():
+	pass # Replace with function body.

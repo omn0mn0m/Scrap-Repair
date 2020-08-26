@@ -4,7 +4,7 @@ extends Actor
 class_name Player
 
 onready var dialogue_display = $ChatBubble/Dialogue
-onready var game_message_display = $GameMessage
+onready var game_message_display = $ChatBubble2/GameMessage
 
 onready var futility_timer = $FutilityTimer
 
@@ -16,8 +16,6 @@ var parts_held = 0
 var has_battery = false
 
 var lang = "en"
-var dialogue_file_path = "res://dialogue/Dialogue.json"
-var dialogue
 var last_dialogue_part = ""
 var last_game_message_part = ""
 
@@ -27,12 +25,6 @@ export (String) var character = "robot1"
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
-	var dialogue_file = File.new()
-	dialogue_file.open(dialogue_file_path, dialogue_file.READ)
-	var json = dialogue_file.get_as_text()
-	dialogue = JSON.parse(json).result
-	dialogue_file.close()
-	
 	respawn_point = global_position
 	
 	$AnimationPlayer.play(character + "_idle")
@@ -42,11 +34,6 @@ func _input(event):
 	if event.is_action_pressed("interact"):
 		if interactable_object != null:
 			interact_with()
-			
-	if event.is_action_pressed("swap"):
-		if interactable_object != null and interactable_object.has_method("swap"):
-			if GameVariables.can_swap:
-				$SwapSoundEffect2D.play()
 				
 	if event.is_action_pressed("pause"):
 		$PauseMenu.show()
@@ -60,7 +47,7 @@ func _physics_process(delta):
 
 	_velocity = calculate_move_velocity(_velocity, direction, speed, is_jump_interrupted)
 	
-	var snap_vector = Vector2.DOWN * 20 if direction.y == 0.0 else Vector2.ZERO
+	var snap_vector = Vector2.DOWN * 32 if direction.y == 0.0 else Vector2.ZERO
 	
 	var is_on_platform = $PlatformDetector.is_colliding()
 	
@@ -96,7 +83,7 @@ func set_animation():
 func get_direction():
 	var is_jumping = Input.is_action_just_pressed("jump")
 	
-	if is_jumping:
+	if is_jumping and is_on_floor():
 		$JumpSoundEffect2D.play()
 	
 	return Vector2(
@@ -128,12 +115,13 @@ func set_interactable_object(object):
 
 func show_dialogue_part(part, is_game_message, duration):
 	if is_game_message:
-		game_message_display.text = dialogue[part][lang]
+		game_message_display.text = tr(part)
+		$ChatBubble2.visible = true
 		$GameMessageTimer.wait_time = duration
 		last_game_message_part = part
 		$GameMessageTimer.start()
 	else:
-		dialogue_display.text = dialogue[part][lang]
+		dialogue_display.text = tr(part)
 		$ChatBubble.visible = true
 		$DialogueTimer.wait_time = duration
 		last_dialogue_part = part
@@ -147,6 +135,7 @@ func _on_DialogueTimer_timeout():
 		get_tree().change_scene("res://menus/EndCredits.tscn")
 
 func _on_GameMessageTimer_timeout():
+	$ChatBubble2.visible = false
 	game_message_display.text = ""
 	
 	if last_game_message_part == "Bebop":
@@ -154,12 +143,8 @@ func _on_GameMessageTimer_timeout():
 
 func _on_FutilityTimer_timeout():
 	show_dialogue_part("Futility", false, 7)
-	show_dialogue_part("Swap", true, 15)
 	
 	GameVariables.can_swap = true
 	
 	get_tree().get_root().get_node("Game/NormalAudioStreamPlayer").playing = false
 	get_tree().get_root().get_node("Game/FutileAudioStreamPlayer").playing = true
-
-func _on_SwapSoundEffect2D_finished():
-	interactable_object.swap(self)

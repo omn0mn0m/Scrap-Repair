@@ -50,6 +50,8 @@ func interact(player):
 	
 	if not held:
 		player.interactable_object = null
+	else:
+		$ControlTip.visible = false
 		
 func is_held():
 	return held
@@ -57,7 +59,9 @@ func is_held():
 func _on_InteractArea2D_body_entered(body):
 	if body.has_method("interact_with"):
 		body.set_interactable_object(self)
-		$ControlTip.visible = true
+		
+		if not held:
+			$ControlTip.visible = true
 
 func _on_InteractArea2D_body_exited(body):
 	if not held:

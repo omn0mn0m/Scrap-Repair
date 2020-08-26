@@ -1,9 +1,8 @@
-[gd_scene load_steps=12 format=2]
+[gd_scene load_steps=11 format=2]
 
 [ext_resource path="res://objects/actors/Player.gd" type="Script" id=1]
 [ext_resource path="res://assets/0x72_16x16RobotTileset.v1.png" type="Texture" id=2]
 [ext_resource path="res://assets/Jump17.wav" type="AudioStream" id=3]
-[ext_resource path="res://assets/Powerup14.wav" type="AudioStream" id=4]
 [ext_resource path="res://menus/PauseMenu.tscn" type="PackedScene" id=5]
 
 [sub_resource type="CapsuleShape2D" id=1]
@@ -146,25 +145,32 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="JumpSoundEffect2D" type="AudioStreamPlayer" parent="."]
-stream = ExtResource( 3 )
-volume_db = -10.0
+[node name="ChatBubble2" type="Panel" parent="."]
+visible = false
+margin_left = -249.0
+margin_top = 83.0
+margin_right = 248.0
+margin_bottom = 102.0
+custom_styles/panel = SubResource( 6 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
 
-[node name="SwapSoundEffect2D" type="AudioStreamPlayer2D" parent="."]
-stream = ExtResource( 4 )
-
-[node name="PauseMenu" parent="." instance=ExtResource( 5 )]
-
-[node name="GameMessage" type="Label" parent="."]
-margin_left = -247.108
-margin_top = 88.1875
-margin_right = 248.892
-margin_bottom = 102.187
+[node name="GameMessage" type="Label" parent="ChatBubble2"]
+margin_left = 2.48172
+margin_top = 2.50755
+margin_right = 495.482
+margin_bottom = 16.5076
 align = 1
 __meta__ = {
 "_edit_use_anchors_": false
 }
+
+[node name="JumpSoundEffect2D" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 3 )
+volume_db = -10.0
+
+[node name="PauseMenu" parent="." instance=ExtResource( 5 )]
 [connection signal="timeout" from="DialogueTimer" to="." method="_on_DialogueTimer_timeout"]
 [connection signal="timeout" from="GameMessageTimer" to="." method="_on_GameMessageTimer_timeout"]
 [connection signal="timeout" from="FutilityTimer" to="." method="_on_FutilityTimer_timeout"]
-[connection signal="finished" from="SwapSoundEffect2D" to="." method="_on_SwapSoundEffect2D_finished"]

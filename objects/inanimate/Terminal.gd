@@ -50,3 +50,7 @@ func _on_Terminal_body_exited(body):
 		body.set_interactable_object(null)
 		$ControlTip.visible = false
 		
+
+
+func _on_DialogueTrigger_body_entered(body):
+	pass # Replace with function body.
