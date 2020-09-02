@@ -35,11 +35,11 @@ func _ready():
 	$Sprite.visible = false
 
 func _physics_process(delta):
-	if GameVariables.terminals_activated >= 4:
+	if GameVariables.terminals_activated >= GameVariables.max_terminals:
 		$Sprite.visible = true
 		
 		if held:
-			position = get_parent().get_node("Player/HoldPosition2D").global_position
+			position = get_tree().get_root().get_node("Game/Player/HoldPosition2D").global_position
 		else:
 			_velocity.y += gravity * delta
 			
@@ -48,10 +48,10 @@ func _physics_process(delta):
 func interact(player):
 	held = !held
 	
-	if not held:
-		player.interactable_object = null
-	else:
+	if held:
 		$ControlTip.visible = false
+	else:
+		player.interactable_object = null
 		
 func is_held():
 	return held

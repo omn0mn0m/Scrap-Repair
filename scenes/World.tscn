@@ -143,9 +143,6 @@ position = Vector2( 496, 416 )
 part = "Interact"
 duration = 4
 
-[node name="DialogueTrigger" parent="DialogueTriggers/DialogueTrigger4" instance=ExtResource( 10 )]
-position = Vector2( -464, 72 )
-
 [node name="DialogueTrigger3" parent="DialogueTriggers" instance=ExtResource( 10 )]
 position = Vector2( 808, 480 )
 part = "RepairHim"
@@ -162,3 +159,6 @@ duration = 10
 position = Vector2( 2336, 488 )
 part = "Bebop"
 duration = 7
+
+[node name="DialogueTrigger7" parent="DialogueTriggers" instance=ExtResource( 10 )]
+position = Vector2( 32, 488 )
